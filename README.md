@@ -20,6 +20,11 @@ $ npm i -D hardhat
 $ npx hardhat
 ```
 
+### install dotenv & create .env file
+```shell
+$ npm i -S dotenv
+$ echo "ENV_VAR='some value'" >> .env
+
 ## Boilerplate docs
 ### Basic Sample Hardhat Project
 
