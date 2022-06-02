@@ -36,7 +36,7 @@ contract GuessGame {
             console.log("game is over, winner is:", winner);
             return;
         }
-        if (getPlayer(msg.sender)) {
+        if (!getPlayer(msg.sender)) {
             signPlayerUp();
         }
         playerStructs[msg.sender].guess = _guess;
@@ -51,6 +51,7 @@ contract GuessGame {
             console.log("no more attempts left");
             return;
         }
+        playerStructs[msg.sender].attempts = attempts - 1;
         if (guess > randomNumber) {
             console.log("guess too big, guess again");
             return;

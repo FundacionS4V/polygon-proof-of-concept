@@ -4,7 +4,7 @@ a proof of concept for s4v platform funding smart contract process on ETH polygo
 
 
 ## steps to replicate
-
+---
 ### init repo and npm
 
 ```shell
@@ -12,18 +12,27 @@ a proof of concept for s4v platform funding smart contract process on ETH polygo
 $ git init
 $ npm init
 ```
-
+---
 ### install hardhat & create project
 
 ```shell
 $ npm i -D hardhat
 $ npx hardhat
 ```
-
+---
 ### install dotenv & create .env file
 ```shell
 $ npm i -S dotenv
 $ echo "ENV_VAR='some value'" >> .env
+```
+---
+### create first solidity test contract
+check `./contracts/GuessGame.sol` to read this game's contract:
+- sets a random number [1, 100] on deployment for players to guess 
+- signs players up when they take their first guess
+- has a function for players to take a guess; they have up to 5 attempts
+- updates game status on every player attempt
+---
 
 ## Boilerplate docs
 ### Basic Sample Hardhat Project
