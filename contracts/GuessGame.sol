@@ -31,40 +31,44 @@ contract GuessGame {
         return playerStructs[_player].registered;
     }
 
-    function takeGuess(uint _guess) public {
+    function revealNumber() public view returns (uint) {
+        return randomNumber;
+    }
+
+    function takeGuess(uint _guess) public returns(string memory answer) {
         if (gameComplete) {
             console.log("game is over, winner is:", winner);
-            return;
+            return "game is over";
         }
         if (!getPlayer(msg.sender)) {
             signPlayerUp();
         }
         playerStructs[msg.sender].guess = _guess;
-        updateGame();
+        return updateGame();
     }
 
-    function updateGame() internal {
+    function updateGame() internal returns(string memory answer) {
         uint guess = playerStructs[msg.sender].guess;
         uint attempts = playerStructs[msg.sender].attempts;
 
         if (attempts == 0) {
             console.log("no more attempts left");
-            return;
+            return "no more attempts left";
         }
         playerStructs[msg.sender].attempts = attempts - 1;
         if (guess > randomNumber) {
             console.log("guess too big, guess again");
-            return;
+            return "guess too big, guess again";
         }
         if (guess < randomNumber) {
             console.log("guess too small, guess again");
-            return;
+            return "guess too small, guess again";
         }
         if (guess == randomNumber) {
             winner = msg.sender;
             gameComplete = true;
             console.log("congrats! you won!");
-            return;
+            return "congrats! you won!";
         }
     }
 }
