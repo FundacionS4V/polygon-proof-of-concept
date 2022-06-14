@@ -2,10 +2,10 @@
 
 a proof of concept for s4v platform funding smart contract process on ETH polygon network
 
+---
 
 ## Guess Game tutorial contract
 
----
 
 ### init repo and npm
 
@@ -43,12 +43,12 @@ check `./contracts/GuessGame.sol` to read this game's contract:
 
 ---
 
-## get test credits for Mumbai Testnet
+### get test credits for Mumbai Testnet
 go to [polygon's](https://faucet.polygon.technology) or [mumbai's](https://mumbaifaucet.com) faucets and input your wallet so that you can ask for MATIC credits for Mumbai Testnet
 
 ---
 
-## compile & deploy contract on Mumbai Testnet
+### compile & deploy contract on Mumbai Testnet
 complete hardhat.config.js file before compiling and run
 ```shell
 $ npx hardhat compile
@@ -61,7 +61,7 @@ check output on terminal, it should read something like `Contract deployed to ad
 
 ---
 
-## check contract has been deployed
+### check contract has been deployed
 go to [Polygon Testnet Explorer](https://mumbai.polygonscan.com) and input contract's address on search bar; it should take you to our deployed contract detail view. 
 
 check transaction corresponding to contract creation; in this example it doesn't cost a specific amount of MATIC but what had to be paid as transaction fees.
@@ -71,7 +71,7 @@ now check your own wallet and you should see the same transaction and your updat
 
 ---
 
-## add tasks to interact with contract
+### add tasks to interact with contract
 on this hardhat.config.js file add a task declaration to create a new task, i.e.: `guess`, to interact with out contract through a public method, just like `takeGuess`.
 
 this task will be listed by hardhat on help `$ npx hardhat --help` and may be used through
@@ -82,7 +82,7 @@ $ npx hardhat guess --number 15
 
 ---
 
-## add unit tests
+### add unit tests
 tests should be always written before any value code, but this being a guided learning process it made sense to start hands on value code; in order to write tests `mocha` dep needs to be installed
 ```shell
 $ npm i -D mocha
@@ -104,21 +104,16 @@ $ npx hardhat --verbose test ./test/guessGameTest.js --network hardhat
 
 ## DonationPot contract (FS4V proof of concept)
 
+### declare tests for contract
+
+declared tests are based on user stories:
+- as **s4v** I want to **create a DonationPot** based on a set of available choices `(humanitarian projects)` and a goal amount `(based on choices budgets)`
+- as a **potential donor** I want to **add money to the pot** in order to become a donor and have a vote on this DonationPot
+- as a **donor** I should be able to **add more money to the pot** in order to increase my stake in this DonationPot
+- as **stakeholder** I want to **check current DonationPot composition** in order to know how much money has each donor put in
+- as **donor** I want to **vote for a choice once goal amount was reached** in order to promote my favorite project
+- as **donor** I will only be allowed to **vote during the next fifteen (15) days from the moment the goal amount was reached**, so that funds will not sit idle for long and instead get transfered to winning choice's address
+- as **stakeholder** I want to **check voting results** in order to know which choice was selected as beneficiary
+- as **winning ngo** I want to **receive funds on my wallet** right after voting window has ended
+
 ---
-
-## Boilerplate docs
-### Basic Sample Hardhat Project
-
-This project demonstrates a basic Hardhat use case. It comes with a sample contract, a test for that contract, a sample script that deploys that contract, and an example of a task implementation, which simply lists the available accounts
-
-Try running some of the following tasks:
-
-```shell
-npx hardhat accounts
-npx hardhat compile
-npx hardhat clean
-npx hardhat test
-npx hardhat node
-node scripts/sample-script.js
-npx hardhat help
-```
