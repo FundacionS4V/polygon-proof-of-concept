@@ -71,10 +71,21 @@ now check your own wallet and you should see the same transaction and your updat
 
 ---
 
+## add tasks to interact with contract
+on this hardhat.config.js file add a task declaration to create a new task, i.e.: `guess`, to interact with out contract through a public method, just like `takeGuess`.
+
+this task will be listed by hardhat on help `$ npx hardhat --help` and may be used through
+```shell
+# npx hardhat <taskName> <--params values>
+$ npx hardhat guess --number 15
+```
+
+---
+
 ## add unit tests
 tests should be always written before any value code, but this being a guided learning process it made sense to start hands on value code; in order to write tests `mocha` dep needs to be installed
 ```shell
-npm i -D mocha
+$ npm i -D mocha
 ```
 add test file on `./test` folder and run it using
 ```shell
