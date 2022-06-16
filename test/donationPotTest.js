@@ -3,21 +3,25 @@ const { MockProvider } = require("ethereum-waffle");
 const { ethers } = require("hardhat");
 
 describe("DonationPot", () => {
+    // create projects with name, api id and wallet address
     const provider = new MockProvider();
     const wallets = provider.getWallets();
-    const choices = wallets.slice(4).map(
-        (wallet, index) => {
-            return [{
-                address: wallet.address,
-                name: `Test project number ${index}`
-            }];
-    });
+    const accounts = [];
+    const names = [];
+    const apiIds = [];
+    for (let index = 0; index < 2; index++) {
+        names.push(`Test project number ${index + 1}`);
+        apiIds.push(index + 1);
+        accounts.push(wallets[index].address);
+    }
     it("should be created based on voting choices available and goal amount", async() => {
         const DonationPot = await ethers.getContractFactory("DonationPot");
-        const deployedPot = await DonationPot.deploy({
-            choices: choices,
-            goal: 20000
-        });
+        const deployedPot = await DonationPot.deploy(
+            20000,
+            [...names],
+            [...apiIds],
+            [...accounts]
+        );
         await deployedPot.deployed();
         expect(deployedPot.address).to.exist;
     });
