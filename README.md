@@ -107,9 +107,9 @@ $ npx hardhat --verbose test ./test/guessGameTest.js --network hardhat
 ### declare tests for contract
 
 declared tests are based on user stories:
-- as **s4v** I want to **create a DonationPot** based on a set of available choices `(humanitarian projects)` and a goal amount `(based on choices budgets)`
-- as a **potential donor** I want to **add money to the pot** in order to become a donor and have a vote on this DonationPot
-- as a **donor** I should be able to **add more money to the pot** in order to increase my stake in this DonationPot
+- as **s4v** I want to **create a DonationPot** based on a set of available choices `(humanitarian projects)` and a goal amount `(based on choices budgets)` ✅
+- as a **potential donor** I want to **add money to the pot** in order to become a donor and have a vote on this DonationPot ✅
+- as a **donor** I should be able to **add more money to the pot** in order to increase my stake in this DonationPot ✅
 - as **stakeholder** I want to **check current DonationPot composition** in order to know how much money has each donor put in
 - as **donor** I want to **vote for a choice once goal amount was reached** in order to promote my favorite project
 - as **donor** I will only be allowed to **vote during the next fifteen (15) days from the moment the goal amount was reached**, so that funds will not sit idle for long and instead get transfered to winning choice's address
