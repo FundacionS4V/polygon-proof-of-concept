@@ -87,8 +87,23 @@ describe("DonationPot", () => {
             expect(donationFrom).to.equal(donationObjects[donorAddress].donation);
         }
     });
-    it("should not allow any voting to occur up until goal amount has been reached", async() => {});
-    it("should not allow voting after fifteen (15) days have passed since goal amount was reached", async() => {});
+    it("should not allow any voting to occur up until goal amount has been reached", async() => {
+        let tx = await donors[1].sendTransaction({
+            to: deployedPot.address,
+            value: 100
+        });
+        await tx.wait();
+        await expect(deployedPot.connect(donors[1]).vote(2)).to.be.revertedWith("pot goal has not been reached; no voting allowed yet.");
+    });
+    it("should not allow voting after fifteen (15) days have passed since goal amount was reached", async() => {
+        let tx = await donors[1].sendTransaction({
+            to: deployedPot.address,
+            value: 21000
+        });
+        await tx.wait();
+        await provider.send('evm_increaseTime', [15 * 24 * 60 * 60]);
+        await expect(deployedPot.connect(donors[1]).vote(1)).to.be.revertedWith("sorry, voting window is closed.");
+    });
     it("should return voting results after window is over because everyone voted", async() => {});
     it("should return voting results after window is over because voting deadline is reached", async() => {});
     it("should send pot money to winning choice wallet right after vote has ended", async() => {});
