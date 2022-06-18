@@ -6,6 +6,7 @@ import "hardhat/console.sol";
 contract DonationPot {
     // contracts goal amount; when reached vote starts
     uint256 immutable public goal;
+    address[] donorAddresses;
     // a donor with governance over pot funds
     struct Donor {
         uint256 funds;
@@ -17,7 +18,7 @@ contract DonationPot {
         address payable account;
         string name;
         uint32 apiId;
-        uint16 votes;
+        uint256 votes;
     }
     // donor structs
     mapping(address => Donor) public donors;
@@ -54,33 +55,28 @@ contract DonationPot {
     receive() external payable {
         require(msg.value > 0, "can't donate 0 tokens");
         if (donors[msg.sender].registered) {
+            // if msg.sender is already a donor
+            // just add to current funds
             donors[msg.sender].funds += msg.value;
         } else {
+            // otherwise add it as a donor
+            donorAddresses.push(msg.sender);
             donors[msg.sender].funds = msg.value;
             donors[msg.sender].voted = false;
             donors[msg.sender].registered = true;
         }
     }
-    function getDonationsBy(address _donorAddress) 
+    function getDonationsFrom(address _donorAddress) 
         external 
         view 
         returns(uint256 _donation) {
         require(donors[_donorAddress].registered, "haven't donated anything yet");
         return donors[_donorAddress].funds;
     }
-    // function sendTransfer(address payable _to, uint256 _amount) external payable {
-    //     _to.transfer(_amount);
-    // }
-    // function collaborate() public payable returns(uint256 currentDonorFunds) {
-    //     require(msg.value > 0, "can't donate 0 tokens");
-    //     console.log(msg.value);
-    //     if (donors[msg.sender].registered) {
-    //         donors[msg.sender].funds += msg.value;
-    //     } else {
-    //         donors[msg.sender].funds = msg.value;
-    //         donors[msg.sender].vote = 0;
-    //         donors[msg.sender].registered = true;
-    //     }
-    //     return donors[msg.sender].funds;
-    // }
+    function getDonors()
+        public
+        view
+        returns(address[] memory) {
+        return donorAddresses;
+    }
 }

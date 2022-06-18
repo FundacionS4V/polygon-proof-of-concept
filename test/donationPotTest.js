@@ -36,7 +36,7 @@ describe("DonationPot", () => {
         });
         await tx.wait();
         expect(await provider.getBalance(deployedPot.address)).to.equal(100);
-        expect(await deployedPot.getDonationsBy(donors[1].address)).to.equal(100);
+        expect(await deployedPot.getDonationsFrom(donors[1].address)).to.equal(100);
     });
     it("should allow an investor to add more money to the pot", async() => {
         let tx = await donors[1].sendTransaction({
@@ -53,9 +53,40 @@ describe("DonationPot", () => {
         });
         await tx.wait();
         expect(await provider.getBalance(deployedPot.address)).to.equal(300);
-        expect(await deployedPot.getDonationsBy(donors[2].address)).to.equal(200);
+        expect(await deployedPot.getDonationsFrom(donors[2].address)).to.equal(200);
     });
-    it("should return current pot composition {donor: amount}", async() => {});
+    it("should return donors and donations in order to build current pot composition {donor: donation}", async() => {
+        const donationObjects = {
+            [donors[1].address]: {
+                signer: donors[1],
+                donation: 25
+            },
+            [donors[2].address]: {
+                signer: donors[2],
+                donation: 100
+            },
+            [donors[3].address]: {
+                signer: donors[3],
+                donation: 431
+            }
+        };
+        let tx;
+        for (let address in donationObjects) {
+            tx = await donationObjects[address].signer.sendTransaction({
+                to: deployedPot.address,
+                value: donationObjects[address].donation
+            });
+        }
+        await tx.wait();
+        const donorAddresses = await deployedPot.getDonors();
+        expect(donorAddresses.length).to.equal(3);
+        for (let donorAddress of donorAddresses) {
+            const donationFrom = await deployedPot.getDonationsFrom(
+                donorAddress
+            );
+            expect(donationFrom).to.equal(donationObjects[donorAddress].donation);
+        }
+    });
     it("should not allow any voting to occur up until goal amount has been reached", async() => {});
     it("should not allow voting after fifteen (15) days have passed since goal amount was reached", async() => {});
     it("should return voting results after window is over because everyone voted", async() => {});
