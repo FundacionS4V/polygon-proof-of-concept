@@ -102,6 +102,7 @@ describe("DonationPot", () => {
         });
         await tx.wait();
         await provider.send('evm_increaseTime', [15 * 24 * 60 * 60]);
+        await provider.send('evm_mine');
         await expect(deployedPot.connect(donors[1]).vote(1)).to.be.revertedWith("sorry, voting window is closed.");
     });
     it("should return voting results after window is over because everyone voted", async() => {
@@ -132,11 +133,50 @@ describe("DonationPot", () => {
             ).vote(donationObject.vote);
         }
         await tx.wait();
-        const [winnerId, winnerWallet, amountTransfered] = await deployedPot.getWinner();
+        const [winnerId, winnerAddress, transferedFunds] = await deployedPot.getWinner();
         expect(winnerId).to.equal(3);
-        expect(winnerWallet).to.equal(wallets[2].address);
-        expect(amountTransfered).to.equal(55600);
+        expect(winnerAddress).to.equal(wallets[2].address);
+        expect(transferedFunds).to.equal(55600);
     });
-    it("should return voting results after window is over because voting deadline is reached", async() => {});
+    it("should return voting results after window is over because voting deadline is reached", async() => {
+        const donationObjects = [{
+            signer: donors[1],
+            donation: 2500,
+            vote: 1,
+        }, {
+            signer: donors[2],
+            donation: 10000,
+            vote: 1
+        }, {
+            signer: donors[3],
+            donation: 43100,
+            vote: 3
+        }];
+        let tx;
+        for (let donationObject of donationObjects) {
+            tx = await donationObject.signer.sendTransaction({
+                to: deployedPot.address,
+                value: donationObject.donation
+            });
+        }
+        await tx.wait();
+        const lateOne = donationObjects.pop();
+        for (let donationObject of donationObjects) {
+            tx = await deployedPot.connect(
+                donationObject.signer
+            ).vote(donationObject.vote);
+        }
+        await tx.wait();
+        await provider.send('evm_increaseTime', [16 * 24 * 60 * 60]);
+        await provider.send('evm_mine');
+        await expect(deployedPot.getWinner()).to.be.revertedWith(
+            "no winner yet, execute countVotes if 15 day voting window is over and try again."
+        )
+        await deployedPot.countVotes();
+        const [winnerId, winnerAddress, transferedFunds] = await deployedPot.getWinner();
+        expect(winnerId).to.equal(1);
+        expect(winnerAddress).to.equal(wallets[0].address);
+        expect(transferedFunds).to.equal(55600);
+    });
     it("should send pot money to winning choice wallet right after vote has ended", async() => {});
 });

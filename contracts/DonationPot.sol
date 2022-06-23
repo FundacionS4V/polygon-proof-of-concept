@@ -101,14 +101,19 @@ contract DonationPot {
         choices[_apiId].votes += donors[msg.sender].funds;
         donors[msg.sender].funds = 0;
         donors[msg.sender].voted = true;
-        // donors[msg.sender].vote = _apiId;
+        // donors[msg.sender].vote = _apiId; for public votes...
         totalVotes += 1;
         if (totalVotes == donorAddresses.length) {
-            setWinner();
-            fundWinner();
-            // (uint32 winnerChoice, ) = getWinner();
-            // choices[winnerChoice].account.transfer(address(this).balance);
+            countVotes();
         }
+    }
+    function countVotes() public returns(bool _success) {
+        require(totalVotes == donorAddresses.length || block.timestamp > voteStartsAt + 15 days, "election not over yet!");
+        if (winner != 0) {
+            revert("a winner has already been declared");
+        } 
+        setWinner();
+        return fundWinner();
     }
     function setWinner() internal {
         uint32 winnerChoice = apiIds[0];
@@ -119,7 +124,12 @@ contract DonationPot {
         }
         winner = winnerChoice;
     }
-    function getWinner() public view returns(uint32, address, uint256) {
+    function getWinner() external view returns(
+        uint32 _winnerId, 
+        address _winnerAddress, 
+        uint256 _transferedFunds
+    ) {
+        require(winner != 0, "no winner yet, execute countVotes if 15 day voting window is over and try again.");
         return (winner, choices[winner].account, choices[winner].fundsTransfered);
     }
     function fundWinner() public payable returns(bool success) {
