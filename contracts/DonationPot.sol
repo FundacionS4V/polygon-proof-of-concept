@@ -8,6 +8,9 @@ contract DonationPot {
     uint256 immutable public goal;
     address[] donorAddresses;
     uint256 public voteStartsAt = 0;
+    uint32[] public apiIds;
+    uint8 public totalVotes = 0;
+    uint32 public winner = 0;
     // a donor with governance over pot funds
     // if election is public, donor struct should
     // include a uint32 vote to store voted choice apiId
@@ -22,6 +25,7 @@ contract DonationPot {
         address payable account;
         string name;
         uint256 votes;
+        uint256 fundsTransfered;
     }
     // donor structs
     mapping(address => Donor) public donors;
@@ -44,12 +48,14 @@ contract DonationPot {
         );
         // sets goal state value
         goal = _goal;
+        apiIds = _apiIds;
         // builds each project with ordered data from lists
         // and adds each one as part of choices structs
         for (uint8 index = 0; index < _names.length; index++) {
             choices[_apiIds[index]] = Project(
                 _accounts[index],
                 _names[index],
+                0,
                 0
             );
         }
@@ -88,11 +94,39 @@ contract DonationPot {
     function vote(uint32 _apiId) external {
         require(address(this).balance >= goal, "pot goal has not been reached; no voting allowed yet.");
         require(block.timestamp < voteStartsAt + 15 days, "sorry, voting window is closed.");
+        require(totalVotes < donorAddresses.length, "sorry, everyone has already voted.");
         require(donors[msg.sender].registered, "no such donor.");
         require(donors[msg.sender].voted == false, "donor has already voted.");
+        // voting value is proportional to participation
         choices[_apiId].votes += donors[msg.sender].funds;
         donors[msg.sender].funds = 0;
         donors[msg.sender].voted = true;
         // donors[msg.sender].vote = _apiId;
+        totalVotes += 1;
+        if (totalVotes == donorAddresses.length) {
+            setWinner();
+            fundWinner();
+            // (uint32 winnerChoice, ) = getWinner();
+            // choices[winnerChoice].account.transfer(address(this).balance);
+        }
+    }
+    function setWinner() internal {
+        uint32 winnerChoice = apiIds[0];
+        for (uint8 index = 1; index < apiIds.length; index++) {
+            if (choices[apiIds[index]].votes > choices[winnerChoice].votes) {
+                winnerChoice = apiIds[index];
+            }
+        }
+        winner = winnerChoice;
+    }
+    function getWinner() public view returns(uint32, address, uint256) {
+        return (winner, choices[winner].account, choices[winner].fundsTransfered);
+    }
+    function fundWinner() public payable returns(bool success) {
+        require(address(this).balance > 0, "no funds in contract...");
+        require(winner != 0, "no winner yet.");
+        choices[winner].fundsTransfered = address(this).balance;
+        choices[winner].account.transfer(address(this).balance);
+        return true;
     }
 }

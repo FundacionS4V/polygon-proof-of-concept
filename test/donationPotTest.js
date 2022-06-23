@@ -10,7 +10,7 @@ describe("DonationPot", () => {
     const accounts = [];
     const names = [];
     const apiIds = [];
-    for (let index = 0; index < 2; index++) {
+    for (let index = 0; index < 3; index++) {
         names.push(`Test project number ${index + 1}`);
         apiIds.push(index + 1);
         accounts.push(wallets[index].address);
@@ -104,7 +104,39 @@ describe("DonationPot", () => {
         await provider.send('evm_increaseTime', [15 * 24 * 60 * 60]);
         await expect(deployedPot.connect(donors[1]).vote(1)).to.be.revertedWith("sorry, voting window is closed.");
     });
-    it("should return voting results after window is over because everyone voted", async() => {});
+    it("should return voting results after window is over because everyone voted", async() => {
+        const donationObjects = [{
+            signer: donors[1],
+            donation: 2500,
+            vote: 1,
+        }, {
+            signer: donors[2],
+            donation: 10000,
+            vote: 1
+        }, {
+            signer: donors[3],
+            donation: 43100,
+            vote: 3
+        }];
+        let tx;
+        for (let donationObject of donationObjects) {
+            tx = await donationObject.signer.sendTransaction({
+                to: deployedPot.address,
+                value: donationObject.donation
+            });
+        }
+        await tx.wait();
+        for (let donationObject of donationObjects) {
+            tx = await deployedPot.connect(
+                donationObject.signer
+            ).vote(donationObject.vote);
+        }
+        await tx.wait();
+        const [winnerId, winnerWallet, amountTransfered] = await deployedPot.getWinner();
+        expect(winnerId).to.equal(3);
+        expect(winnerWallet).to.equal(wallets[2].address);
+        expect(amountTransfered).to.equal(55600);
+    });
     it("should return voting results after window is over because voting deadline is reached", async() => {});
     it("should send pot money to winning choice wallet right after vote has ended", async() => {});
 });
