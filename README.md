@@ -110,10 +110,38 @@ declared tests are based on user stories:
 - as **s4v** I want to **create a DonationPot** based on a set of available choices `(humanitarian projects)` and a goal amount `(based on choices budgets)` ✅
 - as a **potential donor** I want to **add money to the pot** in order to become a donor and have a vote on this DonationPot ✅
 - as a **donor** I should be able to **add more money to the pot** in order to increase my stake in this DonationPot ✅
-- as **stakeholder** I want to **check current DonationPot composition** in order to know how much money has each donor put in (🎭 this means we can get donated funds for a specific address, thus requiring being able to get such list of addresses beforehand)
-- as **donor** I want to **vote for a choice once goal amount was reached** in order to promote my favorite project
-- as **donor** I will only be allowed to **vote during the next fifteen (15) days from the moment the goal amount was reached**, so that funds will not sit idle for long and instead get transfered to winning choice's address
-- as **stakeholder** I want to **check voting results** in order to know which choice was selected as beneficiary
-- as **winning ngo** I want to **receive funds on my wallet** right after voting window has ended
+- as **stakeholder** I want to **check current DonationPot composition** in order to know how much money has each donor put in (🎭 this means we can get donated funds for a specific address, thus requiring being able to get such list of addresses beforehand) ✅
+- as **donor** I want to **vote for a choice once goal amount was reached** in order to promote my favorite project ✅
+- as **donor** I will only be allowed to **vote during the next fifteen (15) days from the moment the goal amount was reached**, so that funds will not sit idle for long and instead get transfered to winning choice's address ✅
+- as **stakeholder** I want to **check voting results** in order to know which choice was selected as beneficiary ✅
+- as **winning ngo** I want to **receive funds on my wallet** right after voting window has ended ✅
+
+> pending: determine rules to declare winner on no votes when deadline, or same amount of votes after window closes.
 
 ---
+### deploy and test drive!
+
+deploy contract on Mumbai Testnet, create test wallets for users and projects, get credits from faucet and run an iteration for a donation pot to see how the contract behaves.
+
+**donors**
+```yml
+luis: 0x...
+karim: 0x...
+alfredo: 0x...
+steve: 0x...
+```
+
+**ngo projects**
+```yaml
+1:
+- name: Chamartín sin fronteras
+- address: 0x...
+2:
+- name: balones unidos
+- address: 0x...
+3:
+- name: hospitales de la cruz
+- address: 0x...
+```
+
+**getting credits for our donors**

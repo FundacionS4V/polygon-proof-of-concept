@@ -213,5 +213,6 @@ describe("DonationPot", () => {
         expect(transferedFunds).to.equal(55600);
         const finalBalance = await provider.getBalance(winnerAddress);
         expect(finalBalance.sub(initialBalance).toNumber()).to.equal(55600);
+        expect(await provider.getBalance(deployedPot.address)).to.equal(0);
     });
 });
