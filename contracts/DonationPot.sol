@@ -4,13 +4,6 @@ pragma solidity ^0.8.0;
 import "hardhat/console.sol";
 
 contract DonationPot {
-    // contracts goal amount; when reached vote starts
-    uint256 immutable public goal;
-    address[] donorAddresses;
-    uint256 public voteStartsAt = 0;
-    uint32[] public apiIds;
-    uint8 public totalVotes = 0;
-    uint32 public winner = 0;
     // a donor with governance over pot funds
     // if election is public, donor struct should
     // include a uint32 vote to store voted choice apiId
@@ -27,9 +20,21 @@ contract DonationPot {
         uint256 votes;
         uint256 fundsTransfered;
     }
-    // donor structs
+    // contracts goal amount; when reached vote starts
+    uint256 immutable public goal;
+    // donor addresses
+    address[] donorAddresses;
+    // assigned block.timestamp on goal being reached
+    uint256 public voteStartsAt = 0;
+    // choices origin ids
+    uint32[] public apiIds;
+    // state for total votes received
+    uint8 public totalVotes = 0;
+    // state for winner origin id (apiId)
+    uint32 public winner = 0;
+    // donor structs mapping: address to Donor
     mapping(address => Donor) public donors;
-    // project structs: apiId to Project
+    // project structs mapping: apiId to Project
     mapping(uint32 => Project) public choices;
     // create contract
     // project choices cannot be received as structs
