@@ -267,7 +267,10 @@ ALFREDO_KEY=
 SETEVE_ADDRESS=
 STEVE_KEY=
 ```
-* run voting scripts
+* run voting scripts for each donor with:
+```shell
+$ node ./scripts/voteOnDonationPot.js DONOR_NAME API_ID_VOTE`
+```
 ```yaml
 contract_address: 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
 donors:
