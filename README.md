@@ -202,3 +202,113 @@ s4v:
     address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
     credits: 0.149053685252078449 MATIC # ~ $0.09
 ```
+
+**donations**
+
+transfers made to contract address:
+```yaml
+contract_address: 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
+donors:
+    - luis: 
+        value: 1.0 MATIC
+        hash: 0x82335ec90f6c9d33c885d107b5eeb927db62242f46d06f9e4c7c784c4764956e
+        fee: 0.005141959330902296 MATIC
+        final_balance: 3.994858040669097704 MATIC
+    - karim: 
+        value: 0.1 MATIC
+        hash: 0x6a9b01dd8bb3f5ca538e461c9b1e91667a0f36d9cbbf9e502596b2d5e43cc4d1
+        fee: 0.003464624603523532 MATIC
+        final_balance: 0.096535375396476468 MATIC
+    - alfredo: 
+        # value: used max amount transfer as 0.2 MATIC must include fees...
+        value: 0.19711498194316161 MATIC
+        hash: 0x3d2d494fa048142aa13965f0aaea308304afdae0be5269a9a4fade6dcab248b6
+        fee: 0.001398297722151415 MATIC
+        final_balance: 0.001486720334686975 MATIC
+    - steve: 
+        value: 0.9 MATIC
+        hash: 0xc00834a9ca7bf6b7c7d70b563b3ff59df51ac6cdf592e6034c2c5247483eae3e
+        fee: 0.003928015 MATIC
+        # this user cancelled a transfer with a 0.000655110397494 MATIC fee
+        final_balance: 0.095416874602506 MATIC
+```
+```yaml
+donation_pot:
+    address: 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
+    balance: 2.19711498194316161 MATIC
+```
+
+**voting starts!**
+
+* install alchemy web3 library
+```shell
+    npm i @alch/alchemy-web3
+```
+* create voting scripts for donors on `./scripts`
+
+* update env variables
+```env
+# for donation pot test drive
+DONATION_POT_ADDRESS=0x646944fB1DA1b45A08Fa603C1A8055822d66767F
+
+# luis
+LUIS_ADDRESS=
+LUIS_KEY=
+
+# karim
+KARIM_ADDRESS=
+KARIM_KEY=
+
+# alfredo
+ALFREDO_ADDRESS=
+ALFREDO_KEY=
+
+# steve
+SETEVE_ADDRESS=
+STEVE_KEY=
+```
+* run voting scripts
+```yaml
+contract_address: 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
+donors:
+    - luis: 
+        vote: 3
+        hash: 0xc2c90d6c144211fd225cc607fdd1dd5cf40d8101be923d212a8d1c7e4dcdf0cd
+        fee: 0.00015599303885004 MATIC
+        final_balance: 3.994702047630247664 MATIC
+    - karim: 
+        vote: 3
+        hash: 0xfbded79ff91425f473b006c1805f1723c8ff1a760b2376f9bd7320ba623812f7
+        fee: 0.00009091518191232
+        final_balance: 0.096444460214564148 MATIC
+    - alfredo: 
+        vote: 3 # was supposed to be 1, typo (:
+        hash: 0x0eee8564e9770a54d8b50f60125815b19b08280c9203dda2dc1c55810f94b563
+        fee: 0.00009067370898696 MATIC
+        final_balance: 0.001396046625700015 MATIC
+    - steve: 
+        vote: 2 
+        hash: 0x0ac30b4a3b210637b3692e014c4c2cf7245ecefcff8fcdaffa18d796072085a1
+        fee: 0.001270215025096016 MATIC # includes fee for transaction to winner
+        # this changes if there is no automatic result after last vote
+        # instead s4v could run countVotes() fn not only when vote window closes
+        # but also on everyone voted on time scenarios, such that this fee
+        # corresponds to s4v account
+        final_balance: 0.094146659577409984 MATIC
+```
+
+### winning choice
+
+after last vote was emmited, a transaction was sent to hospitales de lacruz account for the whole contract balance.
+```yaml
+hospitales de lacruz:
+    address: 0x161BC527bf95938C571C109573988815e70321CA
+    balance: 2.19711498194316161 MATIC
+```
+full contract balance was sent to winner as internal transaction, such that transaction fee was paid by last voter and current contract balance is 0.
+
+-----
+
+### test drive extrapolation
+
+on ethereum chain transactions and fees will behave just as it happens on polygon mumbais network, so we can figure 1 ETH will behave as 1 MATIC did.
