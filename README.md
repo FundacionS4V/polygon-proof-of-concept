@@ -125,23 +125,37 @@ deploy contract on Mumbai Testnet, create test wallets for users and projects, g
 
 **donors**
 ```yml
-luis: 0x...
-karim: 0x...
-alfredo: 0x...
-steve: 0x...
+luis: 0x03536c24F106B5352EEf494755D1099F9D6AeBfa
+karim: 0xD1c3602c885Ed586330a19Dd7A854587bc700A2a
+alfredo: 0x6b85EDabA2CecE675e0b402BB5C699A0FfB038aF
+steve: 0x80E8857B426caa56540597e28f862204daC3c21f
 ```
 
 **ngo projects**
 ```yaml
 1:
-- name: Chamartín sin fronteras
-- address: 0x...
+- name: chamartin sin fronteras
+- address: 0xf7C5477f0C0b29E818233DBcAE49ACE851BB2d0b
 2:
 - name: balones unidos
-- address: 0x...
+- address: 0x24ED45Ab02260A827ec199Ed03ca370E256Ba619
 3:
-- name: hospitales de la cruz
-- address: 0x...
+- name: hospitales de lacruz
+- address: 0x161BC527bf95938C571C109573988815e70321CA
 ```
 
 **getting credits for our donors**
+```yaml
+# @ $0.60/MATIC
+luis: 5.00000000 MATIC ~ $3.00 
+karim: 0.20000000 MATIC ~ $0.12
+alfredo: 0.20000000 MATIC ~ $0.12
+steve: 1.00000000 MATIC ~ $0.60
+```
+
+**s4v credits**
+```yaml
+s4v: 
+    address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
+    credits: 0.16406504 MATIC
+```
