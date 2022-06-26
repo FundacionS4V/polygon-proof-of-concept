@@ -147,15 +147,58 @@ steve: 0x80E8857B426caa56540597e28f862204daC3c21f
 **getting credits for our donors**
 ```yaml
 # @ $0.60/MATIC
-luis: 5.00000000 MATIC ~ $3.00 
-karim: 0.20000000 MATIC ~ $0.12
-alfredo: 0.20000000 MATIC ~ $0.12
-steve: 1.00000000 MATIC ~ $0.60
+luis: 5.00000000 MATIC # ~ $3.00 
+karim: 0.20000000 MATIC # ~ $0.12
+alfredo: 0.20000000 MATIC # ~ $0.12
+steve: 1.00000000 MATIC # ~ $0.60
 ```
 
 **s4v credits**
 ```yaml
+# @ $0.60/MATIC
 s4v: 
     address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
-    credits: 0.16406504 MATIC
+    credits: 0.164065043490616649 MATIC # ~ $0.10
+```
+
+**build deploy script**
+
+build deployDonationPot.js to deploy contract on Mumbai Testnet using project's data and a goal of `2 MATIC`.
+
+```js
+// @ 1000000000000000000 WEI/MATIC 
+// as 1 MATIC equals 1 ETH on Polygon network
+const goal = ethers.utils.parseEther("2.0");
+const names = [
+    "chamartin sin fronteras", 
+    "balones unidos",
+    "hospitales de la cruz"
+];
+const apiIds = [1, 2, 3];
+const accounts = [
+    "0xf7C5477f0C0b29E818233DBcAE49ACE851BB2d0b",
+    "0x24ED45Ab02260A827ec199Ed03ca370E256Ba619",
+    "0x161BC527bf95938C571C109573988815e70321CA"
+];
+```
+
+**compile and deploy contract**
+
+using same `hardhat.config.js`:
+```shell
+$ npx hardhat compile
+$ npx hardhat run ./scripts/deployDonationPot.js --network polygon_mumbai
+```
+deployed contract address expected on output:
+```shell
+donation pot deployed at 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
+```
+
+**cost of deployment**
+
+deploying this contract incurred in a gas fee of `0.0150113582385382 MATIC` deducted from s4v account. 
+```yaml
+s4v: 
+    address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
+    credits: 0.149053685252078449 MATIC # ~ $0.09
 ```
