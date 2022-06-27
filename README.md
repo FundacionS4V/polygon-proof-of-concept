@@ -16,7 +16,7 @@ a proof of concept for s4v platform funding smart contract process on ETH polygo
 * [check deployed contract](#check-contract-has-been-deployed)
 * [hardhat tasks](#add-tasks-to-interact-with-contract)
 * [unit testing](#add-unit-tests)
-* [credits to tutorial author](#credits-to-author-🙌🏽✨)
+* [credits to tutorial author](#credits-to-author)
 
 [DONATION POT PROOF OF CONCEPT](#donationpot-contract-fs4v-proof-of-concept)
 
@@ -132,7 +132,7 @@ $ npx hardhat --verbose test ./test/guessGameTest.js --network hardhat
 
 -----
 
-### credits to author 🙌🏽✨ 
+### credits to author
 
 all thanks & credits for this guess game tutorial to **simon** [@Salvien-code]() from Nigeria. 
 
