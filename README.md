@@ -16,7 +16,7 @@ a proof of concept for s4v platform funding smart contract process on ETH polygo
 * [check deployed contract](#check-contract-has-been-deployed)
 * [hardhat tasks](#add-tasks-to-interact-with-contract)
 * [unit testing](#add-unit-tests)
-* [credits to tutorial author]()
+* [credits to tutorial author](#credits-to-author-🙌🏽✨)
 
 [DONATION POT PROOF OF CONCEPT](#donationpot-contract-fs4v-proof-of-concept)
 
@@ -130,7 +130,29 @@ add `--verbose` flag if you need more output on console
 $ npx hardhat --verbose test ./test/guessGameTest.js --network hardhat
 ```
 
----
+-----
+
+### credits to author 🙌🏽✨ 
+
+all thanks & credits for this guess game tutorial to **simon** [@Salvien-code]() from Nigeria. 
+
+```yaml
+author: Simon
+location: Port Harcourt, Nigeria 
+publication: 
+    date: 2022-05-03
+    title: Building your first Dapp with Solidity on the Polygon Blockchain
+    url: https://dev.to/salviencode/building-your-first-dapp-with-solidity-on-the-polygon-blockchain-46n
+github_repo: 
+    user: Salvien-code
+    title: Polygon Solidity Dapp (Basic Sample Hardhat Project)
+    url: https://github.com/Salvien-code/Polygon-Solidity-Dapp
+
+```
+
+here's the repo used for publication on dev.to: [Polygon-Solidity-Dapp](https://github.com/Salvien-code/Polygon-Solidity-Dapp)
+
+-----
 
 ## DonationPot contract (FS4V proof of concept)
 
@@ -239,7 +261,7 @@ deploying this contract incurred in a gas fee of `0.0150113582385382 MATIC` dedu
 ```yaml
 s4v: 
     address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
-    credits: 0.149053685252078449 MATIC # ~ $0.09
+    credits: 0.149053685252078449 MATIC
 ```
 
 -----
@@ -312,7 +334,7 @@ STEVE_KEY=
 ```
 * run voting scripts for each donor with:
 ```shell
-$ node ./scripts/voteOnDonationPot.js DONOR_NAME API_ID_VOTE`
+$ node ./scripts/voteOnDonationPot.js DONOR_NAME API_ID_VOTE
 ```
 ```yaml
 contract_address: 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
