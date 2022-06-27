@@ -150,8 +150,6 @@ github_repo:
 
 ```
 
-here's the repo used for publication on dev.to: [Polygon-Solidity-Dapp](https://github.com/Salvien-code/Polygon-Solidity-Dapp)
-
 -----
 
 ## DonationPot contract (FS4V proof of concept)
