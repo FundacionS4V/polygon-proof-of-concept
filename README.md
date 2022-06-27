@@ -4,8 +4,38 @@ a proof of concept for s4v platform funding smart contract process on ETH polygo
 
 ---
 
-## Guess Game tutorial contract
+## contents
+[GUESS GAME TUTORIAL](#guess-game-tutorial-contract)
 
+* [init repo](#init-repo-and-npm)
+* [create project](#install-hardhat--create-project)
+* [environment variables](#install-dotenv--create-env-file)
+* [first contract](#create-first-solidity-contract)
+* [credits on test network](#get-test-credits-for-mumbai-testnet)
+* [compile & deploy](#compile--deploy-contract-on-mumbai-testnet)
+* [check deployed contract](#check-contract-has-been-deployed)
+* [hardhat tasks](#add-tasks-to-interact-with-contract)
+* [unit testing](#add-unit-tests)
+* [credits to tutorial author]()
+
+[DONATION POT PROOF OF CONCEPT](#donationpot-contract-fs4v-proof-of-concept)
+
+* [donation pot tests](#declare-tests-for-contract)
+* [deploy & test drive](#deploy-and-test-drive)
+* [accounts](#accounts)
+* [credits](#credits)
+* [build script](#build-script)
+* [compile & deploy](#compile--deploy)
+* [cost of deployment](#cost-of-deployment)
+* [donations](#donations)
+* [voting starts!](#voting-starts)
+* [winning choice](#winning-choice)
+* [MATIC to ETH](#test-drive-extrapolation)
+* [next steps](#next-steps)
+
+---
+
+## Guess Game tutorial contract
 
 ### init repo and npm
 
@@ -34,7 +64,7 @@ $ echo "ENV_VAR='some value'" >> .env
 
 ---
 
-### create first solidity test contract
+### create first solidity contract
 check `./contracts/GuessGame.sol` to read this game's contract:
 - sets a random number [1, 100] on deployment for players to guess 
 - signs players up when they take their first guess
@@ -119,9 +149,14 @@ declared tests are based on user stories:
 > pending: determine rules to declare winner on no votes when deadline, or same amount of votes after window closes.
 
 ---
+
 ### deploy and test drive!
 
 deploy contract on Mumbai Testnet, create test wallets for users and projects, get credits from faucet and run an iteration for a donation pot to see how the contract behaves.
+
+-----
+
+### accounts
 
 **donors**
 ```yml
@@ -144,24 +179,24 @@ steve: 0x80E8857B426caa56540597e28f862204daC3c21f
 - address: 0x161BC527bf95938C571C109573988815e70321CA
 ```
 
-**getting credits for our donors**
+-----
+
+### credits
+
 ```yaml
 # @ $0.60/MATIC
 luis: 5.00000000 MATIC # ~ $3.00 
 karim: 0.20000000 MATIC # ~ $0.12
 alfredo: 0.20000000 MATIC # ~ $0.12
 steve: 1.00000000 MATIC # ~ $0.60
-```
-
-**s4v credits**
-```yaml
-# @ $0.60/MATIC
 s4v: 
     address: 0xb59777550bBAEf262cEa9C42eE7ce477194cc25b
     credits: 0.164065043490616649 MATIC # ~ $0.10
 ```
 
-**build deploy script**
+-----
+
+### build script
 
 build deployDonationPot.js to deploy contract on Mumbai Testnet using project's data and a goal of `2 MATIC`.
 
@@ -182,7 +217,9 @@ const accounts = [
 ];
 ```
 
-**compile and deploy contract**
+-----
+
+### compile & deploy
 
 using same `hardhat.config.js`:
 ```shell
@@ -194,7 +231,9 @@ deployed contract address expected on output:
 donation pot deployed at 0x646944fB1DA1b45A08Fa603C1A8055822d66767F
 ```
 
-**cost of deployment**
+-----
+
+### cost of deployment
 
 deploying this contract incurred in a gas fee of `0.0150113582385382 MATIC` deducted from s4v account. 
 ```yaml
@@ -203,7 +242,9 @@ s4v:
     credits: 0.149053685252078449 MATIC # ~ $0.09
 ```
 
-**donations**
+-----
+
+### donations
 
 transfers made to contract address:
 ```yaml
@@ -220,7 +261,7 @@ donors:
         fee: 0.003464624603523532 MATIC
         final_balance: 0.096535375396476468 MATIC
     - alfredo: 
-        # value: used max amount transfer as 0.2 MATIC must include fees...
+        # value: transfered max as 0.2 MATIC must include fees
         value: 0.19711498194316161 MATIC
         hash: 0x3d2d494fa048142aa13965f0aaea308304afdae0be5269a9a4fade6dcab248b6
         fee: 0.001398297722151415 MATIC
@@ -229,7 +270,7 @@ donors:
         value: 0.9 MATIC
         hash: 0xc00834a9ca7bf6b7c7d70b563b3ff59df51ac6cdf592e6034c2c5247483eae3e
         fee: 0.003928015 MATIC
-        # this user cancelled a transfer with a 0.000655110397494 MATIC fee
+        # cancelled a transfer with 0.000655110397494 MATIC fee
         final_balance: 0.095416874602506 MATIC
 ```
 ```yaml
@@ -238,7 +279,9 @@ donation_pot:
     balance: 2.19711498194316161 MATIC
 ```
 
-**voting starts!**
+-----
+
+### voting starts!
 
 * install alchemy web3 library
 ```shell
@@ -292,11 +335,14 @@ donors:
     - steve: 
         vote: 2 
         hash: 0x0ac30b4a3b210637b3692e014c4c2cf7245ecefcff8fcdaffa18d796072085a1
-        fee: 0.001270215025096016 MATIC # includes fee for transaction to winner
-        # this changes if there is no automatic result after last vote
-        # instead s4v could run countVotes() fn not only when vote window closes
-        # but also on everyone voted on time scenarios, such that this fee
-        # corresponds to s4v account
+        fee: 0.001270215025096016 MATIC 
+        # includes fee for transaction to winner
+        # this changes if there is no automatic result 
+        # after last vote; instead s4v could run 
+        # countVotes() fn not only when vote window 
+        # closes but also on everyone voted on time 
+        # scenarios, such that this fee corresponds 
+        # to s4v account
         final_balance: 0.094146659577409984 MATIC
 ```
 
@@ -315,3 +361,70 @@ full contract balance was sent to winner as internal transaction, such that tran
 ### test drive extrapolation
 
 on ethereum chain transactions and fees will behave just as it happens on polygon mumbais network, so we can figure 1 ETH will behave as 1 MATIC did.
+
+```yaml
+# @ $1,211.01/ETH
+donation_goal: 2 ETH # ~ $2,422.02
+```
+```yaml
+sv4:
+    creation_fee: 0.0150113582385382 ETH # ~ $18.18
+    mean_donation_fee: 0.003483224164144310 ETH # ~ $4.22
+    mean_vote_fee_estimate: 0.000113193976593106 ETH # ~ $0.14
+    winners_transfer_fee_estimate: 0.001157021048512909 ETH # ~ $1.40
+```
+```yaml
+donors: 
+    luis: 
+        starting_balance: 5.000000000000000000 ETH # ~ $6,055.05
+        donation: 1.000000000000000000 ETH # ~ $1,211.01
+        donation_fee: 0.005141959330902296 ETH # ~ $6.27
+        vote: hospitales de lacruz
+        voting_fee: 0.000155993038850040 ETH # ~ $0.19
+        other_fees: null
+        observations: null
+        final_balance: 3.994702047630247664 ETH # ~ $4,837.62
+    karim: 
+        starting_balance: 0.200000000000000000 ETH # ~ $242.20
+        donation: 0.100000000000000000 ETH # ~ $121.10
+        donation_fee: 0.003464624603523532 ETH # ~ $4,20
+        vote: hospitales de lacruz
+        voting_fee: 0.000090915181912320 ETH # ~ $0.11
+        other_fees: null
+        observations: null
+        final_balance: 0.096444460214564148 ETH # ~ $116.80
+    alfredo: 
+        starting_balance: 0.200000000000000000 ETH # ~ $242.20
+        donation: 0.197114981943161610 ETH # ~ $238.71
+        donation_fee: 0.001398297722151415 ETH # ~ $1.69
+        vote: hospitales de lacruz
+        voting_fee: 0.000090673708986960 ETH # ~ $0.11
+        other_fees: null
+        observations: 
+            - should have voted for project 1
+            - donation took longer, hence lower gas fee (?)
+        final_balance: 0.001396046625700015 ETH # ~ $1.69
+    steve: 
+        starting_balance: 1.000000000000000000 ETH # ~ $1,211.01
+        donation: 0.900000000000000000 ETH # ~ $1,089.91
+        donation_fee: 0.003928015000000000 ETH # ~ $4.76
+        vote: balones unidos
+        voting_fee: 0.001270215025096016 ETH # ~ $1.54
+        other_fees: 0.000655110397494000 ETH # ~ $0.79
+        observations: 
+            - voting fee includes winner transfer fee
+            - other fees include a cancelled transaction
+        final_balance: 0.094146659577409984 ETH # ~ $114.01
+```
+```yaml
+hospitales de lacruz:
+    balance: 2.197114981943161610 ETH # ~ $2,660.73
+```
+
+-----
+
+## next steps
+
+* deploy on Loom network
+* test drive with lower donation amounts, i.e.: 0.02 MATIC
+* build front end and integrate alchemy DAPP
